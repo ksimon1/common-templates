@@ -69,10 +69,13 @@ script:
 # -e is important to let make use the vars defined in "matrix:" above
 - make -e $TARGET
 
+before_deploy:
+  -tar -cvf release.tar presets/*.yaml templates/*.yaml
+
 deploy:
   provider: releases
-  api_key: ""
-  file: "FILE TO UPLOAD"
+  api_key: $GITHUB_OAUTH_TOKEN
+  file: "release.tar"
   skip_cleanup: true
   on:
     tags: true
