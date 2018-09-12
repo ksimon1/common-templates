@@ -38,7 +38,6 @@ addons:
     - jq
 
 before_script:
-- sudo apt-get install yamllint
 # Fetch binaries
 - curl -Lo kubectl https://storage.googleapis.com/kubernetes-release/release/v$K8S_VER/bin/linux/amd64/kubectl && chmod +x kubectl && sudo mv kubectl /usr/local/bin/
 - curl -L https://github.com/kubernetes-incubator/cri-tools/releases/download/v1.11.1/crictl-v1.11.1-linux-amd64.tar.gz | tar zx crictl && chmod +x crictl && sudo mv crictl /usr/local/bin/
@@ -67,7 +66,6 @@ before_script:
 - kubectl -n kube-system logs -l kubevirt.io=virt-handler
 
 script:
-- yamllint .
 # -e is important to let make use the vars defined in "matrix:" above
 - make -e $TARGET
 
