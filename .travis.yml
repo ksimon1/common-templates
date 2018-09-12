@@ -70,7 +70,7 @@ script:
 - make -e $TARGET
 
 before_deploy:
-- tar -cvf release.tar presets/*.yaml templates/*.yaml
+- tar -cvf release.tar cat presets/*.yaml templates/*.yaml > ./all.yaml
 
 deploy:
   provider: releases
