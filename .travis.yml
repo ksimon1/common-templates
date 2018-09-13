@@ -23,6 +23,17 @@ matrix:
 #    env: TARGET=functional-tests TEST_FUNCTIONAL=opensuse15
   - name: Functional test of the CentOS/RHEL template
     env: TARGET=functional-tests TEST_FUNCTIONAL=rhel75
+  - stage: before_deploy
+    - cat presets/*.yaml templates/*.yaml > ./all.yaml
+    - tar -cvf release.tar all.yaml
+  - stage: deploy
+    provider: releases
+    api_key: $GITHUB_OAUTH_TOKEN
+    file: "release.tar"
+    skip_cleanup: true
+    on:
+      tags: true
+
 
 #notifications:
 #  irc:
@@ -68,15 +79,3 @@ before_script:
 script:
 # -e is important to let make use the vars defined in "matrix:" above
 - make -e $TARGET
-
-before_deploy:
-- cat presets/*.yaml templates/*.yaml > ./all.yaml
-- tar -cvf release.tar all.yaml
-
-deploy:
-  provider: releases
-  api_key: $GITHUB_OAUTH_TOKEN
-  file: "release.tar"
-  skip_cleanup: true
-  on:
-    tags: true
