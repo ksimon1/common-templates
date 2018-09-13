@@ -26,9 +26,6 @@ matrix:
 
 jobs:
   include:
-    - stage: before_deploy
-      - cat presets/*.yaml templates/*.yaml > ./all.yaml
-      - tar -cvf release.tar all.yaml
     - stage: deploy
       provider: releases
       api_key: $GITHUB_OAUTH_TOKEN
@@ -82,3 +79,7 @@ before_script:
 script:
 # -e is important to let make use the vars defined in "matrix:" above
 - make -e $TARGET
+
+before_deploy:
+- cat presets/*.yaml templates/*.yaml > ./all.yaml
+- tar -cvf release.tar all.yaml
