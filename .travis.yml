@@ -11,6 +11,8 @@ env:
     - K8S_VER=1.11.2
     - KUBEVIRT_VER=v0.8.0-alpha.1
 
+
+
 matrix:
   include:
   - name: Check syntax of all templates
@@ -26,9 +28,22 @@ matrix:
 
 jobs:
   include:
-    # -e is important to let make use the vars defined in "matrix:" above
-    - script: make -e $TARGET
+    - stage: test
+      name: Check syntax of all templates
+      env: TARGET=syntax-tests
+      script: make -e $TARGET
 
+      name: Functional test of the Fedora template
+      env: TARGET=functional-tests TEST_FUNCTIONAL=fedora28
+      script: make -e $TARGET
+
+      name: Functional test of the Ubuntu template
+      env: TARGET=functional-tests TEST_FUNCTIONAL=ubuntu1804
+      script: make -e $TARGET
+
+      name: Functional test of the CentOS/RHEL template
+      env: TARGET=functional-tests TEST_FUNCTIONAL=rhel75
+      script: make -e $TARGET
     - stage: deploy
       provider: releases
       api_key: $GITHUB_OAUTH_TOKEN
