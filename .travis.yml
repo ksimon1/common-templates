@@ -26,6 +26,9 @@ matrix:
 
 jobs:
   include:
+    # -e is important to let make use the vars defined in "matrix:" above
+    - script: make -e $TARGET
+
     - stage: deploy
       provider: releases
       api_key: $GITHUB_OAUTH_TOKEN
@@ -75,10 +78,6 @@ before_script:
 - kubectl describe nodes
 - kubectl describe -n kube-system daemonset virt-handler
 - kubectl -n kube-system logs -l kubevirt.io=virt-handler
-
-script:
-# -e is important to let make use the vars defined in "matrix:" above
-- make -e $TARGET
 
 before_deploy:
 - cat presets/*.yaml templates/*.yaml > ./all.yaml
