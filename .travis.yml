@@ -13,7 +13,7 @@ env:
 #    - CPLATFORM=oc_cluster CDIST=origin CVER=3.10.0
     - CPLATFORM=minikube CDIST=kubernetes CVER=1.11.2
 
-
+  
 jobs:
   include:
     - stage: "Tests"
