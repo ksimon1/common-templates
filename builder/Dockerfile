@@ -6,10 +6,13 @@ RUN dnf install -y jq ansible python3-gobject python3-openshift python3-pip libo
 
 # Allow writes to /etc/passwd so a user for ansible can be added by CI commands
 RUN chmod a+w /etc/passwd
-
+RUN ls -l /.ansible
 # Create ansible tmp folder and set permissions
-RUN mkdir -p /.ansible/tmp && \
-    chmod -R 777 /.ansible
+RUN mkdir -p /.ansible/tmp
+RUN ls -l /.ansible
+RUN ls -l /.ansible/tmp
+RUN chmod -R 777 /.ansible
+RUN ls -l /.ansible
 
 # Download latest stable oc client binary
 RUN curl -L https://mirror.openshift.com/pub/openshift-v4/x86_64/clients/ocp/stable/openshift-client-linux.tar.gz | tar -C /usr/local/bin -xzf - oc && \
